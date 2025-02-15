@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import './App.css'
 import Cell from './Cell/Cell'
+import ColorPicker from './ColorPicker/ColorPicker'
 
 const whiteColor = 'white'
 const colorList: string[] = [
@@ -9,7 +10,8 @@ const colorList: string[] = [
   'cyan',
   'magenta',
   'yellow',
-  'black'
+  'black',
+  'green'
 ]
 const columnNumber = 100
 const rowNumber = 100
@@ -34,6 +36,8 @@ function App() {
     )
   )
   const [selectedColor, setSelectedColor] = useState<string>(colorList[0])
+  const [pickerClicked, setPickerClicked] = useState<boolean>(false)
+  const [coordinates, setCoordinates] = useState<{x: number, y: number}>({ x: 0, y: 0 })
 
   const handleOnClick = (column: number, row: number) => {
     setCellsToColor(
@@ -44,7 +48,11 @@ function App() {
               (_cell, rowIndex) => {
                 let colorToRender = _cell
                 if (columnIndex === column && rowIndex === row) {
-                  colorToRender = _cell !== whiteColor ? whiteColor : selectedColor
+                  if (_cell === selectedColor) {
+                    colorToRender = whiteColor
+                  } else {
+                    colorToRender = _cell === whiteColor ? selectedColor : whiteColor
+                  }
                 }
                 
                 return colorToRender
@@ -54,15 +62,31 @@ function App() {
         )
       )
     )
-    setSelectedColor(colorList[0])
+  }
+
+  const handleContextClick = (x: number, y: number) => {
+    setPickerClicked(true)
+    setCoordinates({ x, y })
+  }
+
+  const handlePickedColor = (color: string) => {
+    setSelectedColor(color)
+    setPickerClicked(false)
   }
 
   return (
-    <section className="app">
+    <section
+      className="app"
+      style={{ gridTemplateColumns: `repeat(${columnNumber}, minmax(10px, 1fr))`}}
+    >
       {
         cellsToColor.map(
           (column, columnIndex) => (
-            <section key={columnIndex} className='app__column'>
+            <section
+              key={columnIndex}
+              className='app__column'
+              style={{ gridTemplateRows: `repeat(${rowNumber}, 1fr)`}}
+            >
               {
                 column.map(
                   (cellColor, rowIndex) => {
@@ -73,6 +97,7 @@ function App() {
                         row={rowIndex}
                         color={cellColor}
                         onClick={handleOnClick}
+                        onContextMenu={handleContextClick}
                       />
                     )
                   }
@@ -81,6 +106,15 @@ function App() {
             </section>
           )
         )
+      }
+      {
+        pickerClicked ? (
+          <ColorPicker
+            colorList={colorList}
+            coordinates={coordinates}
+            onColorClick={handlePickedColor}
+          />
+        ) : null
       }
     </section>
   )

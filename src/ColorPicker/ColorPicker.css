@@ -1,0 +1,14 @@
+.color-picker {
+  position: absolute;
+  display: grid;
+  column-gap: 5px;
+  background-color: white;
+  padding: 5px;
+  border: 1px solid darkgray;
+  opacity: 1;
+  transition: opacity 2s linear;
+}
+
+.color-picker__box {
+  border: 1px solid darkgray;
+}

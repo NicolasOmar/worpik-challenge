@@ -6,13 +6,15 @@ interface CellProps {
   row: number
   color: string
   onClick: (column: number, row: number) => void
+  onContextMenu: (x: number, y: number) => void
 }
 
 const Cell: FC<CellProps> = ({
   column,
   row,
   color,
-  onClick
+  onClick,
+  onContextMenu
 }) => (
   <section
     className="cell"
@@ -22,7 +24,7 @@ const Cell: FC<CellProps> = ({
     onClick={() => onClick(column, row)}
     onContextMenu={(event) => {
       event.preventDefault()
-      console.warn('context')
+      onContextMenu(event.pageX, event.pageY)
     }}
   />
 )
