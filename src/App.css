@@ -1,5 +1,11 @@
 .app {
   display: grid;
-  grid-template-columns: repeat(100, 1fr);
-  grid-template-rows: repeat(5, 1fr);
+  grid-template-columns: repeat(100, minmax(10px, 1fr));
+  grid-template-rows: 100vh;
+}
+
+.app__column {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: repeat(100, 1fr);
 }

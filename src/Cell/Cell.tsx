@@ -2,13 +2,15 @@ import { FC } from "react";
 import './Cell.css'
 
 interface CellProps {
-  id: number
+  column: number
+  row: number
   color: string
-  onClick: (cellId: number) => void
+  onClick: (column: number, row: number) => void
 }
 
 const Cell: FC<CellProps> = ({
-  id,
+  column,
+  row,
   color,
   onClick
 }) => (
@@ -17,7 +19,7 @@ const Cell: FC<CellProps> = ({
     style={{
       backgroundColor: color
     }}
-    onClick={() => onClick(id)}
+    onClick={() => onClick(column, row)}
     onContextMenu={(event) => {
       event.preventDefault()
       console.warn('context')
