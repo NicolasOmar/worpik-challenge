@@ -1,10 +1,10 @@
 import { FC } from 'react'
 import './ColorPicker.css'
-import { Coordinates } from 'src/interfaces'
+import { ScreenCoordinates } from 'src/interfaces'
 
 interface ColorPickerInterface {
   colorList: string[]
-  coordinates: Coordinates
+  coordinates: ScreenCoordinates
   onColorClick: (selectedColor: string) => void
 }
 
@@ -26,8 +26,9 @@ const ColorPicker: FC<ColorPickerInterface> = ({ colorList, coordinates, onColor
         console.warn('ColorPicker', event.pageX, event.pageY)
       }}
     >
-      {colorList.map(_color => (
+      {colorList.map((_color, colorIndex) => (
         <section
+          key={`${_color}-${colorIndex}`}
           className="color-picker__box"
           style={{ backgroundColor: _color }}
           onClick={() => onColorClick(_color)}
