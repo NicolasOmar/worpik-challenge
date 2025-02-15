@@ -1,6 +1,6 @@
-import { FC } from "react";
+import { FC } from 'react'
 import './ColorPicker.css'
-import { Coordinates } from "src/interfaces";
+import { Coordinates } from 'src/interfaces'
 
 interface ColorPickerInterface {
   colorList: string[]
@@ -10,11 +10,7 @@ interface ColorPickerInterface {
 
 const colorSizeInPx = 40
 
-const ColorPicker: FC<ColorPickerInterface> = ({
-  colorList,
-  coordinates,
-  onColorClick
-}) => {
+const ColorPicker: FC<ColorPickerInterface> = ({ colorList, coordinates, onColorClick }) => {
   return (
     <section
       className="color-picker"
@@ -25,16 +21,18 @@ const ColorPicker: FC<ColorPickerInterface> = ({
         width: `calc(${colorList.length}* ${colorSizeInPx}px)`,
         height: colorSizeInPx
       }}
-      onContextMenu={
-        (event) => {
-          event.preventDefault()
-          console.warn('ColorPicker', event.pageX, event.pageY)
-        }
-      }
+      onContextMenu={event => {
+        event.preventDefault()
+        console.warn('ColorPicker', event.pageX, event.pageY)
+      }}
     >
-      {colorList.map(
-        _color => <section className="color-picker__box" style={{ backgroundColor: _color}} onClick={() => onColorClick(_color)} />
-      )}
+      {colorList.map(_color => (
+        <section
+          className="color-picker__box"
+          style={{ backgroundColor: _color }}
+          onClick={() => onColorClick(_color)}
+        />
+      ))}
     </section>
   )
 }

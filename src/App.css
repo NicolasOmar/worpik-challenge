@@ -1,9 +1,4 @@
-.app {
+.table__container {
   display: grid;
   grid-template-rows: 100vh;
-}
-
-.app__column {
-  display: grid;
-  grid-template-columns: 1fr;
 }

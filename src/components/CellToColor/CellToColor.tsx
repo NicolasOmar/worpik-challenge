@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC } from 'react'
 import './CellToColor.css'
 
 interface CellToColorProps {
@@ -9,20 +9,14 @@ interface CellToColorProps {
   onContextMenu: (x: number, y: number) => void
 }
 
-const CellToColor: FC<CellToColorProps> = ({
-  column,
-  row,
-  color,
-  onClick,
-  onContextMenu
-}) => (
+const CellToColor: FC<CellToColorProps> = ({ column, row, color, onClick, onContextMenu }) => (
   <section
     className="cell-to-color"
     style={{
       backgroundColor: color
     }}
     onClick={() => onClick(column, row)}
-    onContextMenu={(event) => {
+    onContextMenu={event => {
       event.preventDefault()
       onContextMenu(event.pageX, event.pageY)
     }}
