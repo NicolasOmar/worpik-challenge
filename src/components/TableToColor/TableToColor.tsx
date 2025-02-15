@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import { FC, useMemo } from 'react'
 import Cell from '@components/CellToColor/CellToColor'
 import ColorPicker from '@components/ColorPicker/ColorPicker'
 import { Coordinates } from 'src/interfaces'
@@ -10,6 +10,9 @@ interface TableToColorInterface {
   pickerCoordinates: Coordinates
   selectableColorsList: string[]
   onCellClick: (column: number, row: number) => void
+  onCellDragStart: (column: number, row: number) => void
+  onCellMouseMove: (column: number, row: number) => void
+  onCellDragStop: (column: number, row: number) => void
   onContextClick: (xAxis: number, yAxis: number) => void
   onSelectColor: (selectedColor: string) => void
 }
@@ -20,12 +23,15 @@ const TableToColor: FC<TableToColorInterface> = ({
   pickerCoordinates,
   selectableColorsList,
   onCellClick,
+  onCellDragStart,
+  onCellMouseMove,
+  onCellDragStop,
   onContextClick,
   onSelectColor
 }) => {
-  return (
-    <>
-      {tableStructure.map((column, columnIndex) => (
+  const memoizedTable = useMemo(
+    () =>
+      tableStructure.map((column, columnIndex) => (
         <section
           key={columnIndex}
           className="table__column"
@@ -38,13 +44,21 @@ const TableToColor: FC<TableToColorInterface> = ({
                 column={columnIndex}
                 row={rowIndex}
                 color={cellColor}
-                onClick={onCellClick}
+                onCellClick={onCellClick}
+                onCellDragStart={onCellDragStart}
+                onCellMouseMove={onCellMouseMove}
+                onCellDragStop={onCellDragStop}
                 onContextMenu={onContextClick}
               />
             )
           })}
         </section>
-      ))}
+      )),
+    [tableStructure, onCellClick, onCellDragStart, onCellMouseMove, onCellDragStop, onContextClick]
+  )
+  return (
+    <>
+      {memoizedTable}
       {pickedAppears ? (
         <ColorPicker
           colorList={selectableColorsList}

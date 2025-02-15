@@ -1,6 +1,6 @@
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 import TableToColor from '@components/TableToColor/TableToColor'
-import { Coordinates } from './interfaces'
+import { CellCoordinates, Coordinates } from './interfaces'
 import './App.css'
 
 const whiteColor = 'white'
@@ -20,25 +20,49 @@ function App() {
   const [selectedColor, setSelectedColor] = useState<string>(selectableColors[0])
   const [showPicker, setShowPicker] = useState<boolean>(false)
   const [pickerCoordinates, setPickerCoordinates] = useState<Coordinates>({ xAxis: 0, yAxis: 0 })
+  const [isDraggingMouse, setIsDraggingMouse] = useState<boolean>(false)
+  const [movedCell, setMovedCell] = useState<CellCoordinates>({ column: 0, row: 0 })
 
-  const handleCellClick = (column: number, row: number) => {
-    setCellsToColor(_currentCells =>
-      _currentCells.map((_column, columnIndex) =>
-        _column.map((_cell, rowIndex) => {
-          let colorToRender = _cell
-          if (columnIndex === column && rowIndex === row) {
-            if (_cell === whiteColor) {
-              colorToRender = selectedColor
-            } else {
-              colorToRender = _cell !== selectedColor ? selectedColor : whiteColor
+  const handleTableRender = useCallback(
+    (column: number, row: number) => {
+      setCellsToColor(_currentCells =>
+        _currentCells.map((_column, columnIndex) =>
+          _column.map((_cell, rowIndex) => {
+            let colorToRender = _cell
+            if (columnIndex === column && rowIndex === row) {
+              if (_cell === whiteColor) {
+                colorToRender = selectedColor
+              } else {
+                colorToRender = _cell !== selectedColor ? selectedColor : whiteColor
+              }
             }
-          }
 
-          return colorToRender
-        })
+            return colorToRender
+          })
+        )
       )
-    )
+    },
+    [selectedColor, whiteColor, setCellsToColor]
+  )
+
+  const handleCellClick = (column: number, row: number) => handleTableRender(column, row)
+
+  const handleDragStart = (column: number, row: number) => {
+    console.warn('handleDragStart')
+    setIsDraggingMouse(true)
+    handleTableRender(column, row)
   }
+
+  const handleMouseMove = (column: number, row: number) => {
+    const isSameCell = column === movedCell.column && row === movedCell.row
+    console.warn('handleMouseMove', { column, row }, movedCell, isSameCell)
+    if (isDraggingMouse && !isSameCell) {
+      handleTableRender(column, row)
+      setMovedCell({ column, row })
+    }
+  }
+
+  const handleDragStop = () => setIsDraggingMouse(false)
 
   const handleContextClick = (xAxis: number, yAxis: number) => {
     setShowPicker(true)
@@ -61,6 +85,9 @@ function App() {
         pickerCoordinates={pickerCoordinates}
         selectableColorsList={selectableColors}
         onCellClick={handleCellClick}
+        onCellDragStart={handleDragStart}
+        onCellMouseMove={handleMouseMove}
+        onCellDragStop={handleDragStop}
         onContextClick={handleContextClick}
         onSelectColor={handleColorSelection}
       />
