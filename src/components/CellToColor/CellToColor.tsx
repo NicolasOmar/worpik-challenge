@@ -1,7 +1,7 @@
 import { FC } from "react";
-import './Cell.css'
+import './CellToColor.css'
 
-interface CellProps {
+interface CellToColorProps {
   column: number
   row: number
   color: string
@@ -9,7 +9,7 @@ interface CellProps {
   onContextMenu: (x: number, y: number) => void
 }
 
-const Cell: FC<CellProps> = ({
+const CellToColor: FC<CellToColorProps> = ({
   column,
   row,
   color,
@@ -17,7 +17,7 @@ const Cell: FC<CellProps> = ({
   onContextMenu
 }) => (
   <section
-    className="cell"
+    className="cell-to-color"
     style={{
       backgroundColor: color
     }}
@@ -29,4 +29,4 @@ const Cell: FC<CellProps> = ({
   />
 )
 
-export default Cell
+export default CellToColor

@@ -1,10 +1,10 @@
 import { useState } from 'react'
+import TableToColor from '@components/TableToColor/TableToColor'
+import { Coordinates } from './interfaces'
 import './App.css'
-import Cell from './Cell/Cell'
-import ColorPicker from './ColorPicker/ColorPicker'
 
 const whiteColor = 'white'
-const colorList: string[] = [
+const selectableColors: string[] = [
   'red',
   'blue',
   'cyan',
@@ -18,12 +18,6 @@ const rowNumber = 100
 
 function App() {
   /**
-   * Possible ways to improve
-   * Move structure to rows > columns > cells
-   * Make the whole structure as an useMemo
-   * Make 2 states, row and column
-   * Once the cell is clicked, get its row and column
-   * The memo will render the structure based on the selected cell while maintaning its current state
    * Check drag events to calculate which cell will be hovered during that moment
    */
   const [cellsToColor, setCellsToColor] = useState<string[][]>(
@@ -35,11 +29,11 @@ function App() {
       )
     )
   )
-  const [selectedColor, setSelectedColor] = useState<string>(colorList[0])
-  const [pickerClicked, setPickerClicked] = useState<boolean>(false)
-  const [coordinates, setCoordinates] = useState<{x: number, y: number}>({ x: 0, y: 0 })
+  const [selectedColor, setSelectedColor] = useState<string>(selectableColors[0])
+  const [showPicker, setShowPicker] = useState<boolean>(false)
+  const [pickerCoordinates, setPickerCoordinates] = useState<Coordinates>({ xAxis: 0, yAxis: 0 })
 
-  const handleOnClick = (column: number, row: number) => {
+  const handleCellClick = (column: number, row: number) => {
     setCellsToColor(
       _currentCells => (
         _currentCells.map(
@@ -64,22 +58,22 @@ function App() {
     )
   }
 
-  const handleContextClick = (x: number, y: number) => {
-    setPickerClicked(true)
-    setCoordinates({ x, y })
+  const handleContextClick = (xAxis: number, yAxis: number) => {
+    setShowPicker(true)
+    setPickerCoordinates({ xAxis, yAxis })
   }
 
-  const handlePickedColor = (color: string) => {
+  const handleColorSelection = (color: string) => {
     setSelectedColor(color)
-    setPickerClicked(false)
+    setShowPicker(false)
   }
 
   return (
     <section
       className="app"
-      style={{ gridTemplateColumns: `repeat(${columnNumber}, minmax(10px, 1fr))`}}
+      style={{ gridTemplateColumns: `repeat(${columnNumber}, 1fr)`}}
     >
-      {
+      {/* {
         cellsToColor.map(
           (column, columnIndex) => (
             <section
@@ -96,7 +90,7 @@ function App() {
                         column={columnIndex}
                         row={rowIndex}
                         color={cellColor}
-                        onClick={handleOnClick}
+                        onClick={handleCellClick}
                         onContextMenu={handleContextClick}
                       />
                     )
@@ -108,14 +102,23 @@ function App() {
         )
       }
       {
-        pickerClicked ? (
+        showPicker ? (
           <ColorPicker
-            colorList={colorList}
-            coordinates={coordinates}
-            onColorClick={handlePickedColor}
+            selectableColors={selectableColors}
+            pickerCoordinates={pickerCoordinates}
+            onColorClick={handleColorSelection}
           />
         ) : null
-      }
+      } */}
+      <TableToColor
+        tableStructure={cellsToColor}
+        pickedAppears={showPicker}
+        pickerCoordinates={pickerCoordinates}
+        selectableColorsList={selectableColors}
+        onCellClick={handleCellClick}
+        onContextClick={handleContextClick}
+        onSelectColor={handleColorSelection}
+      />
     </section>
   )
 }

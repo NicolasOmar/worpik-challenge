@@ -1,9 +1,10 @@
 import { FC } from "react";
 import './ColorPicker.css'
+import { Coordinates } from "src/interfaces";
 
 interface ColorPickerInterface {
   colorList: string[]
-  coordinates: {x: number, y: number}
+  coordinates: Coordinates
   onColorClick: (selectedColor: string) => void
 }
 
@@ -18,8 +19,8 @@ const ColorPicker: FC<ColorPickerInterface> = ({
     <section
       className="color-picker"
       style={{
-        top: `${coordinates.y}px`,
-        left: `${coordinates.x}px`,
+        top: `${coordinates.yAxis}px`,
+        left: `${coordinates.xAxis}px`,
         gridTemplateColumns: `repeat(${colorList.length}, 1fr)`,
         width: `calc(${colorList.length}* ${colorSizeInPx}px)`,
         height: colorSizeInPx
