@@ -33,7 +33,9 @@ const CellToColor: FC<CellToColorProps> = ({
     onMouseDown={event => {
       event.preventDefault()
       event.stopPropagation()
-      event.button === 0 && onCellDragStart(column, row)
+      if (event.button === 0) {
+        onCellDragStart(column, row)
+      }
     }}
     onMouseOver={event => {
       event.preventDefault()

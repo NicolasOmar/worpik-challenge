@@ -21,10 +21,6 @@ const ColorPicker: FC<ColorPickerInterface> = ({ colorList, coordinates, onColor
         width: `calc(${colorList.length}* ${colorSizeInPx}px)`,
         height: colorSizeInPx
       }}
-      onContextMenu={event => {
-        event.preventDefault()
-        console.warn('ColorPicker', event.pageX, event.pageY)
-      }}
     >
       {colorList.map((_color, colorIndex) => (
         <section

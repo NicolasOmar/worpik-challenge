@@ -19,12 +19,6 @@ const columnNumber = 100
 const rowNumber = 100
 
 function App() {
-  /**
-   * To imrpove
-   * Include fade in and fade out in ColorPicker
-   * Improve drag and select performance
-   * Adjust documentation for better references
-   */
   const [cellsToColor, setCellsToColor] = useState<string[][]>(
     Array.from({ length: columnNumber }).map(() =>
       Array.from({ length: rowNumber }).map(() => whiteColor)
@@ -57,7 +51,7 @@ function App() {
         )
       )
     },
-    [selectedColor, whiteColor, setCellsToColor]
+    [selectedColor, setCellsToColor]
   )
 
   const handleDragStart = (column: number, row: number) => {
@@ -67,7 +61,9 @@ function App() {
   }
 
   const handleMouseMove = (column: number, row: number) => {
-    isDraggingMouse && handleTableRender(column, row)
+    if (isDraggingMouse) {
+      handleTableRender(column, row)
+    }
   }
 
   const handleDragStop = () => setIsDraggingMouse(false)
