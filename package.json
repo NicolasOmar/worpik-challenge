@@ -1,8 +1,19 @@
 {
   "name": "worpik-challenge",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
+  "description": "This project has been created to hold a front-end challenge for Worpik",
+  "author": "Nicolás Omar González Passerino",
+  "license": "MIT",
+  "homepage": "https://worpikchallenge.netlify.app",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NicolasOmar/worpik-challenge.git"
+  },
+  "bugs": {
+    "url": "https://github.com/NicolasOmar/worpik-challenge/issues"
+  },
   "scripts": {
     "start": "vite",
     "build": "tsc -b && vite build",
